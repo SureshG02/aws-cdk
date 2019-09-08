@@ -1,3 +1,8 @@
+# What is AWS CDK?
+The AWS CDK is an infrastructure modeling framework that allows you to define your cloud resources. Compared to the declarative approach with YAML (or JSON), the CDK allows you to declare your infrastructure imperatively. The main language is TypeScript, but several other languages are also supported. The CDK is currently in developer preview.
+
+Stack can be packaged as npm or jar and shared with other team. It’s built on top of aws cloudformation.
+  
 Demo1_LB: Creates a Load balancer and it’s security group via cloud formation.
 
 Demo2_SNSAndSQS: Creates a stack with an SQS queue, SNS topic, subscribes the queue to the topic, and sets a CloudWatch metric and alarm on the SQS queue.
