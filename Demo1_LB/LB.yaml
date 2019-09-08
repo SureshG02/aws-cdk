@@ -1,0 +1,74 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: AWS Load Balancer cloudformation demo.
+
+Parameters:
+  ApplicationName:
+    Type: String
+    Description: "Application name"
+  ApplicationId:
+    Type: String
+    Description: "Application Id"
+  Environment:
+    Type: String
+    Description: "Deployment environment"
+
+Outputs:
+  LoadBalancer:
+    Export:
+      Name: !Sub '${ApplicationName}-loadbalancer' 
+    Value: !Ref LoadBalancer
+
+Resources:
+  LoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: !Sub '${ApplicationName}-alb'
+      Scheme: internet-facing
+      Subnets:
+        - 'subnet-902144f6'
+        - 'subnet-9abe19c0'
+        - 'subnet-afa5d0e7'
+      LoadBalancerAttributes:
+        - Key: idle_timeout.timeout_seconds
+          Value: '50'
+      Tags:
+        - Key: Name
+          Value: !Sub '${ApplicationName}'
+        - Key: applicationId
+          Value: !Ref ApplicationId
+        - Key: environment
+          Value: !Ref Environment
+      SecurityGroups:
+        - !Ref 'LBSG'
+  LBSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for load balancer.
+      Tags:
+        - Key: Name
+          Value: !Ref ApplicationName
+        - Key: applicationId
+          Value: !Ref ApplicationId
+        - Key: environment
+          Value: !Ref Environment
+      VpcId: 'vpc-3c30185a'
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '443'
+          ToPort: '443'
+          CidrIp: '0.0.0.0/0'
+        - IpProtocol: tcp
+          FromPort: '443'
+          ToPort: '443'
+          CidrIpv6: '::/0'  
+  LBDNSname:
+    Type: AWS::Route53::RecordSetGroup
+    Properties:
+      HostedZoneName: vitkutin.com.
+      Comment: DNS name for WSO2 loadbalancer.
+      RecordSets:
+        - Name: wso2.vitkutin.com.
+          Type: A
+          AliasTarget:
+           HostedZoneId: !GetAtt LoadBalancer.CanonicalHostedZoneID
+           DNSName: !GetAtt LoadBalancer.DNSName

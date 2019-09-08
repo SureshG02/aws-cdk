@@ -1,0 +1,37 @@
+Resources:
+  MyFirstBucketCDK46B11151:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    Metadata:
+      aws:cdk:path: ExportDemoStack/MyFirstBucketCDK/Resource
+  CDKMetadata:
+    Type: AWS::CDK::Metadata
+    Properties:
+      Modules: aws-cdk=0.25.0,@aws-cdk/aws-codepipeline-api=0.25.2,@aws-cdk/aws-events=0.25.2,@aws-cdk/aws-iam=0.25.2,@aws-cdk/aws-kms=0.25.2,@aws-cdk/aws-s3=0.25.2,@aws-cdk/aws-s3-notifications=0.25.2,@aws-cdk/cdk=0.25.2,@aws-cdk/cx-api=0.25.2,jsii-runtime=node.js/v8.9.4
+Outputs:
+  MyFirstBucketCDKBucketArn2C0F5CAE:
+    Value:
+      Fn::GetAtt:
+        - MyFirstBucketCDK46B11151
+        - Arn
+    Export:
+      Name: ExportDemoStack:MyFirstBucketCDKBucketArn2C0F5CAE
+  MyFirstBucketCDKBucketName9D673262:
+    Value:
+      Ref: MyFirstBucketCDK46B11151
+    Export:
+      Name: ExportDemoStack:MyFirstBucketCDKBucketName9D673262
+  MyFirstBucketCDKDomainName43C521CA:
+    Value:
+      Fn::GetAtt:
+        - MyFirstBucketCDK46B11151
+        - DomainName
+    Export:
+      Name: ExportDemoStack:MyFirstBucketCDKDomainName43C521CA
+  MyFirstBucketCDKWebsiteURL19221547:
+    Value:
+      Fn::GetAtt:
+        - MyFirstBucketCDK46B11151
+        - WebsiteURL
+    Export:
+      Name: ExportDemoStack:MyFirstBucketCDKWebsiteURL19221547

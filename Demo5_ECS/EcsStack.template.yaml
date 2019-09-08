@@ -1,0 +1,882 @@
+Resources:
+  VPCB9E5F0B4:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      InstanceTenancy: default
+      Tags:
+        - Key: Name
+          Value: EcsStack/VPC
+    Metadata:
+      aws:cdk:path: EcsStack/VPC/Resource
+  VPCPublicSubnet1SubnetB4246D30:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.0.0/19
+      VpcId:
+        Ref: VPCB9E5F0B4
+      AvailabilityZone: eu-west-1a
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: EcsStack/VPC/PublicSubnet1
+        - Key: aws-cdk:subnet-name
+          Value: Public
+        - Key: aws-cdk:subnet-type
+          Value: Public
+    Metadata:
+      aws:cdk:path: EcsStack/VPC/PublicSubnet1/Subnet
+  VPCPublicSubnet1RouteTableFEE4B781:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: VPCB9E5F0B4
+      Tags:
+        - Key: Name
+          Value: EcsStack/VPC/PublicSubnet1
+    Metadata:
+      aws:cdk:path: EcsStack/VPC/PublicSubnet1/RouteTable
+  VPCPublicSubnet1RouteTableAssociation0B0896DC:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: VPCPublicSubnet1RouteTableFEE4B781
+      SubnetId:
+        Ref: VPCPublicSubnet1SubnetB4246D30
+    Metadata:
+      aws:cdk:path: EcsStack/VPC/PublicSubnet1/RouteTableAssociation
+  VPCPublicSubnet1DefaultRoute91CEF279:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: VPCPublicSubnet1RouteTableFEE4B781
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: VPCIGWB7E252D3
+    DependsOn:
+      - VPCVPCGW99B986DC
+    Metadata:
+      aws:cdk:path: EcsStack/VPC/PublicSubnet1/DefaultRoute
+  VPCPublicSubnet1EIP6AD938E8:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+    Metadata:
+      aws:cdk:path: EcsStack/VPC/PublicSubnet1/EIP
+  VPCPublicSubnet1NATGatewayE0556630:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId:
+        Fn::GetAtt:
+          - VPCPublicSubnet1EIP6AD938E8
+          - AllocationId
+      SubnetId:
+        Ref: VPCPublicSubnet1SubnetB4246D30
+      Tags:
+        - Key: Name
+          Value: EcsStack/VPC/PublicSubnet1
+    Metadata:
+      aws:cdk:path: EcsStack/VPC/PublicSubnet1/NATGateway
+  VPCPublicSubnet2Subnet74179F39:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.32.0/19
+      VpcId:
+        Ref: VPCB9E5F0B4
+      AvailabilityZone: eu-west-1b
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: EcsStack/VPC/PublicSubnet2
+        - Key: aws-cdk:subnet-name
+          Value: Public
+        - Key: aws-cdk:subnet-type
+          Value: Public
+    Metadata:
+      aws:cdk:path: EcsStack/VPC/PublicSubnet2/Subnet
+  VPCPublicSubnet2RouteTable6F1A15F1:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: VPCB9E5F0B4
+      Tags:
+        - Key: Name
+          Value: EcsStack/VPC/PublicSubnet2
+    Metadata:
+      aws:cdk:path: EcsStack/VPC/PublicSubnet2/RouteTable
+  VPCPublicSubnet2RouteTableAssociation5A808732:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: VPCPublicSubnet2RouteTable6F1A15F1
+      SubnetId:
+        Ref: VPCPublicSubnet2Subnet74179F39
+    Metadata:
+      aws:cdk:path: EcsStack/VPC/PublicSubnet2/RouteTableAssociation
+  VPCPublicSubnet2DefaultRouteB7481BBA:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: VPCPublicSubnet2RouteTable6F1A15F1
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: VPCIGWB7E252D3
+    DependsOn:
+      - VPCVPCGW99B986DC
+    Metadata:
+      aws:cdk:path: EcsStack/VPC/PublicSubnet2/DefaultRoute
+  VPCPublicSubnet2EIP4947BC00:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+    Metadata:
+      aws:cdk:path: EcsStack/VPC/PublicSubnet2/EIP
+  VPCPublicSubnet2NATGateway3C070193:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId:
+        Fn::GetAtt:
+          - VPCPublicSubnet2EIP4947BC00
+          - AllocationId
+      SubnetId:
+        Ref: VPCPublicSubnet2Subnet74179F39
+      Tags:
+        - Key: Name
+          Value: EcsStack/VPC/PublicSubnet2
+    Metadata:
+      aws:cdk:path: EcsStack/VPC/PublicSubnet2/NATGateway
+  VPCPublicSubnet3Subnet631C5E25:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.64.0/19
+      VpcId:
+        Ref: VPCB9E5F0B4
+      AvailabilityZone: eu-west-1c
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: EcsStack/VPC/PublicSubnet3
+        - Key: aws-cdk:subnet-name
+          Value: Public
+        - Key: aws-cdk:subnet-type
+          Value: Public
+    Metadata:
+      aws:cdk:path: EcsStack/VPC/PublicSubnet3/Subnet
+  VPCPublicSubnet3RouteTable98AE0E14:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: VPCB9E5F0B4
+      Tags:
+        - Key: Name
+          Value: EcsStack/VPC/PublicSubnet3
+    Metadata:
+      aws:cdk:path: EcsStack/VPC/PublicSubnet3/RouteTable
+  VPCPublicSubnet3RouteTableAssociation427FE0C6:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: VPCPublicSubnet3RouteTable98AE0E14
+      SubnetId:
+        Ref: VPCPublicSubnet3Subnet631C5E25
+    Metadata:
+      aws:cdk:path: EcsStack/VPC/PublicSubnet3/RouteTableAssociation
+  VPCPublicSubnet3DefaultRouteA0D29D46:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: VPCPublicSubnet3RouteTable98AE0E14
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: VPCIGWB7E252D3
+    DependsOn:
+      - VPCVPCGW99B986DC
+    Metadata:
+      aws:cdk:path: EcsStack/VPC/PublicSubnet3/DefaultRoute
+  VPCPublicSubnet3EIPAD4BC883:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+    Metadata:
+      aws:cdk:path: EcsStack/VPC/PublicSubnet3/EIP
+  VPCPublicSubnet3NATGatewayD3048F5C:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId:
+        Fn::GetAtt:
+          - VPCPublicSubnet3EIPAD4BC883
+          - AllocationId
+      SubnetId:
+        Ref: VPCPublicSubnet3Subnet631C5E25
+      Tags:
+        - Key: Name
+          Value: EcsStack/VPC/PublicSubnet3
+    Metadata:
+      aws:cdk:path: EcsStack/VPC/PublicSubnet3/NATGateway
+  VPCPrivateSubnet1Subnet8BCA10E0:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.96.0/19
+      VpcId:
+        Ref: VPCB9E5F0B4
+      AvailabilityZone: eu-west-1a
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: EcsStack/VPC/PrivateSubnet1
+        - Key: aws-cdk:subnet-name
+          Value: Private
+        - Key: aws-cdk:subnet-type
+          Value: Private
+    Metadata:
+      aws:cdk:path: EcsStack/VPC/PrivateSubnet1/Subnet
+  VPCPrivateSubnet1RouteTableBE8A6027:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: VPCB9E5F0B4
+      Tags:
+        - Key: Name
+          Value: EcsStack/VPC/PrivateSubnet1
+    Metadata:
+      aws:cdk:path: EcsStack/VPC/PrivateSubnet1/RouteTable
+  VPCPrivateSubnet1RouteTableAssociation347902D1:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: VPCPrivateSubnet1RouteTableBE8A6027
+      SubnetId:
+        Ref: VPCPrivateSubnet1Subnet8BCA10E0
+    Metadata:
+      aws:cdk:path: EcsStack/VPC/PrivateSubnet1/RouteTableAssociation
+  VPCPrivateSubnet1DefaultRouteAE1D6490:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: VPCPrivateSubnet1RouteTableBE8A6027
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: VPCPublicSubnet1NATGatewayE0556630
+    Metadata:
+      aws:cdk:path: EcsStack/VPC/PrivateSubnet1/DefaultRoute
+  VPCPrivateSubnet2SubnetCFCDAA7A:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.128.0/19
+      VpcId:
+        Ref: VPCB9E5F0B4
+      AvailabilityZone: eu-west-1b
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: EcsStack/VPC/PrivateSubnet2
+        - Key: aws-cdk:subnet-name
+          Value: Private
+        - Key: aws-cdk:subnet-type
+          Value: Private
+    Metadata:
+      aws:cdk:path: EcsStack/VPC/PrivateSubnet2/Subnet
+  VPCPrivateSubnet2RouteTable0A19E10E:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: VPCB9E5F0B4
+      Tags:
+        - Key: Name
+          Value: EcsStack/VPC/PrivateSubnet2
+    Metadata:
+      aws:cdk:path: EcsStack/VPC/PrivateSubnet2/RouteTable
+  VPCPrivateSubnet2RouteTableAssociation0C73D413:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: VPCPrivateSubnet2RouteTable0A19E10E
+      SubnetId:
+        Ref: VPCPrivateSubnet2SubnetCFCDAA7A
+    Metadata:
+      aws:cdk:path: EcsStack/VPC/PrivateSubnet2/RouteTableAssociation
+  VPCPrivateSubnet2DefaultRouteF4F5CFD2:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: VPCPrivateSubnet2RouteTable0A19E10E
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: VPCPublicSubnet2NATGateway3C070193
+    Metadata:
+      aws:cdk:path: EcsStack/VPC/PrivateSubnet2/DefaultRoute
+  VPCPrivateSubnet3Subnet3EDCD457:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.160.0/19
+      VpcId:
+        Ref: VPCB9E5F0B4
+      AvailabilityZone: eu-west-1c
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: EcsStack/VPC/PrivateSubnet3
+        - Key: aws-cdk:subnet-name
+          Value: Private
+        - Key: aws-cdk:subnet-type
+          Value: Private
+    Metadata:
+      aws:cdk:path: EcsStack/VPC/PrivateSubnet3/Subnet
+  VPCPrivateSubnet3RouteTable192186F8:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: VPCB9E5F0B4
+      Tags:
+        - Key: Name
+          Value: EcsStack/VPC/PrivateSubnet3
+    Metadata:
+      aws:cdk:path: EcsStack/VPC/PrivateSubnet3/RouteTable
+  VPCPrivateSubnet3RouteTableAssociationC28D144E:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: VPCPrivateSubnet3RouteTable192186F8
+      SubnetId:
+        Ref: VPCPrivateSubnet3Subnet3EDCD457
+    Metadata:
+      aws:cdk:path: EcsStack/VPC/PrivateSubnet3/RouteTableAssociation
+  VPCPrivateSubnet3DefaultRoute27F311AE:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: VPCPrivateSubnet3RouteTable192186F8
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: VPCPublicSubnet3NATGatewayD3048F5C
+    Metadata:
+      aws:cdk:path: EcsStack/VPC/PrivateSubnet3/DefaultRoute
+  VPCIGWB7E252D3:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: EcsStack/VPC
+    Metadata:
+      aws:cdk:path: EcsStack/VPC/IGW
+  VPCVPCGW99B986DC:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId:
+        Ref: VPCB9E5F0B4
+      InternetGatewayId:
+        Ref: VPCIGWB7E252D3
+    Metadata:
+      aws:cdk:path: EcsStack/VPC/VPCGW
+  ClusterEB0386A7:
+    Type: AWS::ECS::Cluster
+    Metadata:
+      aws:cdk:path: EcsStack/Cluster/Resource
+  ClusterCapacityInstanceSecurityGroup2D6F9ADD:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: EcsStack/Cluster/Capacity/InstanceSecurityGroup
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          Description: Allow all outbound traffic by default
+          IpProtocol: "-1"
+      SecurityGroupIngress: []
+      Tags:
+        - Key: Name
+          Value: EcsStack/Cluster/Capacity
+      VpcId:
+        Ref: VPCB9E5F0B4
+    Metadata:
+      aws:cdk:path: EcsStack/Cluster/Capacity/InstanceSecurityGroup/Resource
+  ClusterCapacityInstanceSecurityGroupfromEcsStackLBSecurityGroup8324812A9443E38C5966:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      IpProtocol: tcp
+      Description: Load balancer to target
+      FromPort: 9443
+      GroupId:
+        Fn::GetAtt:
+          - ClusterCapacityInstanceSecurityGroup2D6F9ADD
+          - GroupId
+      SourceSecurityGroupId:
+        Fn::GetAtt:
+          - LBSecurityGroup8A41EA2B
+          - GroupId
+      ToPort: 9443
+    Metadata:
+      aws:cdk:path: EcsStack/Cluster/Capacity/InstanceSecurityGroup/from
+        EcsStackLBSecurityGroup8324812A:9443
+  ClusterCapacityInstanceRole4A69070A:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: EcsStack/Cluster/Capacity/InstanceRole/Resource
+  ClusterCapacityInstanceRoleDefaultPolicyCCA4190D:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - ecs:CreateCluster
+              - ecs:DeregisterContainerInstance
+              - ecs:DiscoverPollEndpoint
+              - ecs:Poll
+              - ecs:RegisterContainerInstance
+              - ecs:StartTelemetrySession
+              - ecs:Submit*
+              - ecr:GetAuthorizationToken
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Effect: Allow
+            Resource: "*"
+        Version: "2012-10-17"
+      PolicyName: ClusterCapacityInstanceRoleDefaultPolicyCCA4190D
+      Roles:
+        - Ref: ClusterCapacityInstanceRole4A69070A
+    Metadata:
+      aws:cdk:path: EcsStack/Cluster/Capacity/InstanceRole/DefaultPolicy/Resource
+  ClusterCapacityInstanceProfileCD41BDF7:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - Ref: ClusterCapacityInstanceRole4A69070A
+    Metadata:
+      aws:cdk:path: EcsStack/Cluster/Capacity/InstanceProfile
+  ClusterCapacityLaunchConfigC44566A4:
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties:
+      ImageId: ami-00921cd1ce43d567a
+      InstanceType: t2.xlarge
+      IamInstanceProfile:
+        Ref: ClusterCapacityInstanceProfileCD41BDF7
+      SecurityGroups:
+        - Fn::GetAtt:
+            - ClusterCapacityInstanceSecurityGroup2D6F9ADD
+            - GroupId
+      UserData:
+        Fn::Base64:
+          Fn::Join:
+            - ""
+            - - |-
+                #!/bin/bash
+                echo ECS_CLUSTER=
+              - Ref: ClusterEB0386A7
+              - >-2
+                 >> /etc/ecs/ecs.config
+                sudo iptables --insert FORWARD 1 --in-interface docker+ --destination 169.254.169.254/32 --jump DROP
+
+                sudo service iptables save
+
+                echo ECS_AWSVPC_BLOCK_IMDS=true >> /etc/ecs/ecs.config
+    DependsOn:
+      - ClusterCapacityInstanceRoleDefaultPolicyCCA4190D
+      - ClusterCapacityInstanceRole4A69070A
+    Metadata:
+      aws:cdk:path: EcsStack/Cluster/Capacity/LaunchConfig
+  ClusterCapacityASGA6ED330E:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      MaxSize: "1"
+      MinSize: "1"
+      DesiredCapacity: "1"
+      LaunchConfigurationName:
+        Ref: ClusterCapacityLaunchConfigC44566A4
+      Tags:
+        - Key: Name
+          PropagateAtLaunch: true
+          Value: EcsStack/Cluster/Capacity
+      VPCZoneIdentifier:
+        - Ref: VPCPrivateSubnet1Subnet8BCA10E0
+        - Ref: VPCPrivateSubnet2SubnetCFCDAA7A
+        - Ref: VPCPrivateSubnet3Subnet3EDCD457
+    UpdatePolicy:
+      AutoScalingReplacingUpdate:
+        WillReplace: true
+      AutoScalingScheduledAction:
+        IgnoreUnmodifiedGroupSizeProperties: true
+    Metadata:
+      aws:cdk:path: EcsStack/Cluster/Capacity/ASG
+  ClusterCapacityDrainECSHookTopic35BB862A:
+    Type: AWS::SNS::Topic
+    Metadata:
+      aws:cdk:path: EcsStack/Cluster/Capacity/DrainECSHook/Topic/Resource
+  ClusterCapacityDrainECSHookFunctionServiceRole58D510CB:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+    Metadata:
+      aws:cdk:path: EcsStack/Cluster/Capacity/DrainECSHook/Function/ServiceRole/Resource
+  ClusterCapacityDrainECSHookFunctionServiceRoleDefaultPolicyAB4154DA:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - autoscaling:CompleteLifecycleAction
+              - ec2:DescribeInstances
+              - ec2:DescribeInstanceAttribute
+              - ec2:DescribeInstanceStatus
+              - ec2:DescribeHosts
+            Effect: Allow
+            Resource: "*"
+          - Action:
+              - ecs:ListContainerInstances
+              - ecs:SubmitContainerStateChange
+              - ecs:SubmitTaskStateChange
+              - ecs:DescribeContainerInstances
+              - ecs:UpdateContainerInstancesState
+              - ecs:ListTasks
+              - ecs:DescribeTasks
+            Effect: Allow
+            Resource: "*"
+        Version: "2012-10-17"
+      PolicyName: ClusterCapacityDrainECSHookFunctionServiceRoleDefaultPolicyAB4154DA
+      Roles:
+        - Ref: ClusterCapacityDrainECSHookFunctionServiceRole58D510CB
+    Metadata:
+      aws:cdk:path: EcsStack/Cluster/Capacity/DrainECSHook/Function/ServiceRole/DefaultPolicy/Resource
+  ClusterCapacityDrainECSHookFunctionF75C9A9F:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        ZipFile: >
+          import boto3, json, os, time
+
+
+          ecs = boto3.client('ecs')
+
+          autoscaling = boto3.client('autoscaling')
+
+
+
+          def lambda_handler(event, context):
+            print(json.dumps(event))
+            cluster = os.environ['CLUSTER']
+            snsTopicArn = event['Records'][0]['Sns']['TopicArn']
+            lifecycle_event = json.loads(event['Records'][0]['Sns']['Message'])
+            instance_id = lifecycle_event.get('EC2InstanceId')
+            if not instance_id:
+              print('Got event without EC2InstanceId: %s', json.dumps(event))
+              return
+
+            instance_arn = container_instance_arn(cluster, instance_id)
+            print('Instance %s has container instance ARN %s' % (lifecycle_event['EC2InstanceId'], instance_arn))
+
+            if not instance_arn:
+              return
+
+            while has_tasks(cluster, instance_arn):
+              time.sleep(10)
+
+            try:
+              print('Terminating instance %s' % instance_id)
+              autoscaling.complete_lifecycle_action(
+                  LifecycleActionResult='CONTINUE',
+                  **pick(lifecycle_event, 'LifecycleHookName', 'LifecycleActionToken', 'AutoScalingGroupName'))
+            except Exception as e:
+              # Lifecycle action may have already completed.
+              print(str(e))
+
+
+          def container_instance_arn(cluster, instance_id):
+            """Turn an instance ID into a container instance ARN."""
+            arns = ecs.list_container_instances(cluster=cluster, filter='ec2InstanceId==' + instance_id)['containerInstanceArns']
+            if not arns:
+              return None
+            return arns[0]
+
+
+          def has_tasks(cluster, instance_arn):
+            """Return True if the instance is running tasks for the given cluster."""
+            instances = ecs.describe_container_instances(cluster=cluster, containerInstances=[instance_arn])['containerInstances']
+            if not instances:
+              return False
+            instance = instances[0]
+
+            if instance['status'] == 'ACTIVE':
+              # Start draining, then try again later
+              set_container_instance_to_draining(cluster, instance_arn)
+              return True
+
+            tasks = instance['runningTasksCount'] + instance['pendingTasksCount']
+            print('Instance %s has %s tasks' % (instance_arn, tasks))
+
+            return tasks > 0
+
+
+          def set_container_instance_to_draining(cluster, instance_arn):
+            ecs.update_container_instances_state(
+                cluster=cluster,
+                containerInstances=[instance_arn], status='DRAINING')
+
+
+          def pick(dct, *keys):
+            """Pick a subset of a dict."""
+            return {k: v for k, v in dct.items() if k in keys}
+      Handler: index.lambda_handler
+      Role:
+        Fn::GetAtt:
+          - ClusterCapacityDrainECSHookFunctionServiceRole58D510CB
+          - Arn
+      Runtime: python3.6
+      Environment:
+        Variables:
+          CLUSTER:
+            Ref: ClusterEB0386A7
+      Tags:
+        - Key: Name
+          Value: EcsStack/Cluster/Capacity
+      Timeout: 310
+    DependsOn:
+      - ClusterCapacityDrainECSHookFunctionServiceRoleDefaultPolicyAB4154DA
+      - ClusterCapacityDrainECSHookFunctionServiceRole58D510CB
+    Metadata:
+      aws:cdk:path: EcsStack/Cluster/Capacity/DrainECSHook/Function/Resource
+  ClusterCapacityDrainECSHookFunctionTopicSubscription4A8CED18:
+    Type: AWS::SNS::Subscription
+    Properties:
+      Protocol: lambda
+      TopicArn:
+        Ref: ClusterCapacityDrainECSHookTopic35BB862A
+      Endpoint:
+        Fn::GetAtt:
+          - ClusterCapacityDrainECSHookFunctionF75C9A9F
+          - Arn
+    Metadata:
+      aws:cdk:path: EcsStack/Cluster/Capacity/DrainECSHook/Function/TopicSubscription/Resource
+  ClusterCapacityDrainECSHookFunctionTopicAE8F19D9:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Ref: ClusterCapacityDrainECSHookFunctionF75C9A9F
+      Principal: sns.amazonaws.com
+      SourceArn:
+        Ref: ClusterCapacityDrainECSHookTopic35BB862A
+    Metadata:
+      aws:cdk:path: EcsStack/Cluster/Capacity/DrainECSHook/Function/Topic
+  ClusterCapacityLifecycleHookDrainHookRoleB2BDD5F9:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: autoscaling.amazonaws.com
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: EcsStack/Cluster/Capacity/LifecycleHookDrainHook/Role/Resource
+  ClusterCapacityLifecycleHookDrainHookRoleDefaultPolicy34F3958B:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action: sns:Publish
+            Effect: Allow
+            Resource:
+              Ref: ClusterCapacityDrainECSHookTopic35BB862A
+        Version: "2012-10-17"
+      PolicyName: ClusterCapacityLifecycleHookDrainHookRoleDefaultPolicy34F3958B
+      Roles:
+        - Ref: ClusterCapacityLifecycleHookDrainHookRoleB2BDD5F9
+    Metadata:
+      aws:cdk:path: EcsStack/Cluster/Capacity/LifecycleHookDrainHook/Role/DefaultPolicy/Resource
+  ClusterCapacityLifecycleHookDrainHook9C5B4B9E:
+    Type: AWS::AutoScaling::LifecycleHook
+    Properties:
+      AutoScalingGroupName:
+        Ref: ClusterCapacityASGA6ED330E
+      LifecycleTransition: autoscaling:EC2_INSTANCE_TERMINATING
+      DefaultResult: CONTINUE
+      HeartbeatTimeout: 300
+      NotificationTargetARN:
+        Ref: ClusterCapacityDrainECSHookTopic35BB862A
+      RoleARN:
+        Fn::GetAtt:
+          - ClusterCapacityLifecycleHookDrainHookRoleB2BDD5F9
+          - Arn
+    DependsOn:
+      - ClusterCapacityLifecycleHookDrainHookRoleDefaultPolicy34F3958B
+      - ClusterCapacityLifecycleHookDrainHookRoleB2BDD5F9
+    Metadata:
+      aws:cdk:path: EcsStack/Cluster/Capacity/LifecycleHookDrainHook/Resource
+  TaskDefTaskRole1EDB4A67:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: EcsStack/TaskDef/TaskRole/Resource
+  TaskDef54694570:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      ContainerDefinitions:
+        - Cpu: 1024
+          Essential: true
+          Image: sugupta/wso2am:2.5.0
+          Links: []
+          LinuxParameters:
+            Capabilities:
+              Add: []
+              Drop: []
+            Devices: []
+            Tmpfs: []
+          Memory: 2048
+          MountPoints: []
+          Name: WSO2Container
+          PortMappings:
+            - ContainerPort: 9443
+              HostPort: 9443
+              Protocol: tcp
+          Ulimits: []
+          VolumesFrom: []
+      Family: EcsStackTaskDefF4279AC8
+      NetworkMode: bridge
+      PlacementConstraints: []
+      RequiresCompatibilities:
+        - EC2
+      TaskRoleArn:
+        Fn::GetAtt:
+          - TaskDefTaskRole1EDB4A67
+          - Arn
+      Volumes: []
+    Metadata:
+      aws:cdk:path: EcsStack/TaskDef/Resource
+  ServiceD69D759B:
+    Type: AWS::ECS::Service
+    Properties:
+      TaskDefinition:
+        Ref: TaskDef54694570
+      Cluster:
+        Ref: ClusterEB0386A7
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 50
+      DesiredCount: 1
+      LaunchType: EC2
+      LoadBalancers:
+        - ContainerName: WSO2Container
+          ContainerPort: 9443
+          TargetGroupArn:
+            Ref: LBListenerECSHttpsGroup3DAA1C4F
+      PlacementConstraints: []
+      PlacementStrategies: []
+      SchedulingStrategy: REPLICA
+    DependsOn:
+      - LBListenerECSHttpsGroup3DAA1C4F
+      - LBListener49E825B4
+    Metadata:
+      aws:cdk:path: EcsStack/Service/Service
+  LB8A12904C:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      LoadBalancerAttributes: []
+      Scheme: internet-facing
+      SecurityGroups:
+        - Fn::GetAtt:
+            - LBSecurityGroup8A41EA2B
+            - GroupId
+      Subnets:
+        - Ref: VPCPublicSubnet1SubnetB4246D30
+        - Ref: VPCPublicSubnet2Subnet74179F39
+        - Ref: VPCPublicSubnet3Subnet631C5E25
+      Type: application
+    DependsOn:
+      - VPCPublicSubnet1DefaultRoute91CEF279
+      - VPCPublicSubnet2DefaultRouteB7481BBA
+      - VPCPublicSubnet3DefaultRouteA0D29D46
+    Metadata:
+      aws:cdk:path: EcsStack/LB/Resource
+  LBSecurityGroup8A41EA2B:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Automatically created Security Group for ELB EcsStackLBEA8DB77C
+      SecurityGroupEgress: []
+      SecurityGroupIngress:
+        - CidrIp: 0.0.0.0/0
+          Description: Allow from anyone on port 443
+          FromPort: 443
+          IpProtocol: tcp
+          ToPort: 443
+      VpcId:
+        Ref: VPCB9E5F0B4
+    Metadata:
+      aws:cdk:path: EcsStack/LB/SecurityGroup/Resource
+  LBSecurityGrouptoEcsStackClusterCapacityInstanceSecurityGroupC04E4E6994438ADD5FF8:
+    Type: AWS::EC2::SecurityGroupEgress
+    Properties:
+      GroupId:
+        Fn::GetAtt:
+          - LBSecurityGroup8A41EA2B
+          - GroupId
+      IpProtocol: tcp
+      Description: Load balancer to target
+      DestinationSecurityGroupId:
+        Fn::GetAtt:
+          - ClusterCapacityInstanceSecurityGroup2D6F9ADD
+          - GroupId
+      FromPort: 9443
+      ToPort: 9443
+    Metadata:
+      aws:cdk:path: EcsStack/LB/SecurityGroup/to
+        EcsStackClusterCapacityInstanceSecurityGroupC04E4E69:9443
+  LBListener49E825B4:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+        - TargetGroupArn:
+            Ref: LBListenerECSHttpsGroup3DAA1C4F
+          Type: forward
+      LoadBalancerArn:
+        Ref: LB8A12904C
+      Port: 443
+      Protocol: HTTPS
+      Certificates:
+        - CertificateArn: arn:aws:acm:eu-west-1:905584838893:certificate/4d22ec6a-3937-4691-981a-ae768d4c248d
+    Metadata:
+      aws:cdk:path: EcsStack/LB/Listener/Resource
+  LBListenerECSHttpsGroup3DAA1C4F:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      HealthCheckIntervalSeconds: 60
+      HealthCheckPath: /services/Version
+      Port: 9443
+      Protocol: HTTPS
+      TargetGroupAttributes: []
+      Targets: []
+      TargetType: instance
+      VpcId:
+        Ref: VPCB9E5F0B4
+    Metadata:
+      aws:cdk:path: EcsStack/LB/Listener/ECSHttpsGroup/Resource
+  CDKMetadata:
+    Type: AWS::CDK::Metadata
+    Properties:
+      Modules: aws-cdk=0.25.0,@aws-cdk/assets=0.25.2,@aws-cdk/assets-docker=0.25.2,@aws-cdk/aws-applicationautoscaling=0.25.2,@aws-cdk/aws-autoscaling=0.25.2,@aws-cdk/aws-autoscaling-common=0.25.2,@aws-cdk/aws-certificatemanager=0.25.2,@aws-cdk/aws-cloudformation=0.25.2,@aws-cdk/aws-cloudwatch=0.25.2,@aws-cdk/aws-codedeploy-api=0.25.2,@aws-cdk/aws-codepipeline-api=0.25.2,@aws-cdk/aws-ec2=0.25.2,@aws-cdk/aws-ecr=0.25.2,@aws-cdk/aws-ecs=0.25.2,@aws-cdk/aws-elasticloadbalancingv2=0.25.2,@aws-cdk/aws-events=0.25.2,@aws-cdk/aws-iam=0.25.2,@aws-cdk/aws-kms=0.25.2,@aws-cdk/aws-lambda=0.25.2,@aws-cdk/aws-logs=0.25.2,@aws-cdk/aws-route53=0.25.2,@aws-cdk/aws-s3=0.25.2,@aws-cdk/aws-s3-notifications=0.25.2,@aws-cdk/aws-sns=0.25.2,@aws-cdk/aws-sqs=0.25.2,@aws-cdk/cdk=0.25.2,@aws-cdk/cx-api=0.25.2,jsii-runtime=node.js/v8.9.4
